@@ -1,0 +1,27 @@
+<nav class="navbar">
+  <div class="navbar-container">
+    <div class="navbar-brand">
+      <a routerLink="/" class="brand-link">
+        <h3>AccessApp</h3>
+      </a>
+    </div>
+
+    <div class="navbar-menu">
+      @if (authService.isAuthenticated()) {
+        <div class="navbar-user">
+          <span class="user-welcome">
+            Welcome, {{ authService.currentUser()?.firstName }}!
+            <span class="user-role">[{{ authService.currentUser()?.role }}]</span>
+          </span>
+          <a routerLink="/dashboard" class="nav-link">Dashboard</a>
+          <button class="btn btn-outline" (click)="onSignout()">Sign Out</button>
+        </div>
+      } @else {
+        <div class="navbar-auth">
+          <a routerLink="/signin" class="nav-link">Sign In</a>
+          <a routerLink="/signup" class="btn btn-primary">Sign Up</a>
+        </div>
+      }
+    </div>
+  </div>
+</nav>
