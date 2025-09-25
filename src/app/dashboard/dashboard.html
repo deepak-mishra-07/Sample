@@ -1,0 +1,73 @@
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <h1>Welcome to your Dashboard</h1>
+    <p>Hello, {{ authService.currentUser()?.firstName }}! You are signed in as a {{ authService.currentUser()?.role }}.</p>
+  </div>
+
+  <div class="dashboard-grid">
+    <div class="dashboard-card">
+      <h3>Profile Information</h3>
+      <div class="profile-info">
+        <p><strong>Name:</strong> {{ authService.currentUser()?.firstName }} {{ authService.currentUser()?.lastName }}</p>
+        <p><strong>Email:</strong> {{ authService.currentUser()?.email }}</p>
+        <p><strong>Role:</strong> {{ authService.currentUser()?.role }}</p>
+        <p><strong>User ID:</strong> {{ authService.currentUser()?.id }}</p>
+      </div>
+    </div>
+
+    <div class="dashboard-card">
+      <h3>Permissions</h3>
+      <div class="permissions-list">
+        @for (permission of authService.currentUser()?.permissions; track permission) {
+          <span class="permission-badge">{{ permission }}</span>
+        }
+      </div>
+    </div>
+
+    @if (authService.hasRole('admin')) {
+      <div class="dashboard-card admin-card">
+        <h3>Admin Panel</h3>
+        <p>You have administrative access to:</p>
+        <ul>
+          <li>User Management</li>
+          <li>Role Assignment</li>
+          <li>System Configuration</li>
+          <li>Security Settings</li>
+        </ul>
+        <button class="btn btn-primary">Access Admin Panel</button>
+      </div>
+    }
+
+    <div class="dashboard-card">
+      <h3>Sample Protected Content</h3>
+      @if (authService.hasPermission('read')) {
+        <p>✅ You can read this content</p>
+      }
+      @if (authService.hasPermission('write')) {
+        <p>✅ You can modify this content</p>
+      }
+      @if (authService.hasPermission('delete')) {
+        <p>✅ You can delete this content</p>
+      } @else {
+        <p>❌ You cannot delete this content</p>
+      }
+      @if (authService.hasPermission('manage_users')) {
+        <p>✅ You can manage other users</p>
+      } @else {
+        <p>❌ You cannot manage other users</p>
+      }
+    </div>
+  </div>
+
+  <div class="dashboard-actions">
+    <h3>Quick Actions</h3>
+    <div class="actions-grid">
+      <button class="btn btn-secondary">Update Profile</button>
+      <button class="btn btn-secondary">Change Password</button>
+      <button class="btn btn-secondary">View Activity Log</button>
+      @if (authService.hasRole('admin')) {
+        <button class="btn btn-primary">Manage Users</button>
+      }
+    </div>
+  </div>
+</div>
